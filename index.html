@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <title>VueJs - Pick a Date</title>
+
+    <link rel="icon" type="image/png" href="images/favico/favicon.png">
+    <link rel="shortcut icon" href="images/favico/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js" integrity="sha512-Izh34nqeeR7/nwthfeE0SI3c8uhFSnqxV0sI9TvTcXiFJkMd6fB644O64BRq2P/LA/+7eRvCw4GmLsXksyTHBg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/fr.min.js" integrity="sha512-RAt2+PIRwJiyjWpzvvhKAG2LEdPpQhTgWfbEkFDCo8wC4rFYh5GQzJBVIFDswwaEDEYX16GEE/4fpeDNr7OIZw==" crossorigin="anonymous"></script>
+    <script>
+        moment.locale('fr');
+    </script>
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+
+</head>
+
+<body>
+
+    <div id="app">
+
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+
+                    <p>{{ value }}</p>
+                    <hr/>
+                    <data-pad ref="main-data-pick-a-date" v-bind:config="PadConfig" v-on:vchange="value = $event" v-bind:value="value"></data-pad>
+
+                </div>
+            </div>
+        </div>
+
+        <br/>
+        <br/>
+
+    </div>
+
+    <link rel="stylesheet" href="css/data-pad.css">
+    <script src="js/data-pad/template.js"></script>
+    <script src="js/data-pad/component.js"></script>
+
+    <!-- VUE JS -->
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

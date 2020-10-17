@@ -1,0 +1,8 @@
+body {
+    overflow-y: scroll;
+    font-family: 'Roboto', sans-serif;
+}
+
+.cursor {
+    cursor: pointer;
+}
