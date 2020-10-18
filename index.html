@@ -36,9 +36,12 @@
             <div class="card">
                 <div class="card-body">
 
-                    <p>{{ value }}</p>
+                    <p>"{{ value }}"</p>
                     <hr/>
                     <data-pad ref="main-data-pick-a-date" v-bind:config="PadConfig" v-on:vchange="value = $event" v-bind:value="value"></data-pad>
+
+                    <hr/> Lipsum 1
+                    <br/> Lipsum 2
 
                 </div>
             </div>
@@ -48,6 +51,15 @@
         <br/>
 
     </div>
+
+    <!--
+    <link rel="stylesheet" href="css/data-pad.css">
+    <script src="build/data-pad-no-css.js"></script>
+    -->
+
+    <!--
+    <script src="build/data-pad.js"></script>
+    -->
 
     <link rel="stylesheet" href="css/data-pad.css">
     <script src="js/data-pad/template.js"></script>

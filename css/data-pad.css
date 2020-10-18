@@ -1,3 +1,8 @@
+.data-pad-input {
+    background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAdgAAAHYBTnsmCAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAACASURBVDiN7dNBDoJADAXQJyFeQjYcQ08g7tlwI07mPYBLsBoXDpGNGKpLf9K0af9v08yUFy6Y0XuPPnPOS6JYFU84ot5oUGdOtU7eMCLttBGNoHix4ZCDMIrPlG2U2d8x7dRW8msktIHhLdLXK/wb/OgfTOgC2s7zDDQYBO4A1wfL4ziFtrd9ugAAAABJRU5ErkJggg==) 97% 50% no-repeat;
+    text-align: center;
+}
+
 .data-pad-calendar {
     position: absolute;
     font-size: 12px;
@@ -34,7 +39,6 @@
 .data-pad-calendar table .calendar_days td {
     width: 36px;
     height: 36px;
-    _padding: 8px;
 }
 
 .data-pad-calendar table .calendar_days td {
@@ -104,6 +108,9 @@
     border-color: transparent transparent transparent #fff;
 }
 
+
+/* --- */
+
 .data-pad-calendar .calendar_days td.pm,
 .data-pad-calendar .calendar_days td.nm {
     background-color: #eaeaea;
@@ -115,7 +122,7 @@
     color: #fff;
 }
 
-.data-pad-calendar .calendar_days td.cm div:hover {
+.data-pad-calendar .calendar_days td.cm:not(.cbs) div:hover {
     background-color: #ea7805;
     color: #fff;
     cursor: pointer;
@@ -136,6 +143,11 @@
     height: 90%;
 }
 
+.data-pad-calendar .calendar_days td.cbs {
+    background-image: linear-gradient(135deg, #bdbdbd 25%, #ffffff 25%, #ffffff 50%, #bdbdbd 50%, #bdbdbd 75%, #ffffff 75%, #ffffff 100%);
+    background-size: 5.66px 5.66px;
+}
+
 .data-pad-calendar .calendar_days td.selected div {
     border-radius: 100%;
     background-color: #8635c5;
@@ -152,6 +164,14 @@
 
 .data-pad-calendar .date_navigator .month_year .select_year span {
     cursor: pointer;
+    border: 1px solid transparent;
+    padding: .2rem;
+    border-radius: .2rem;
+}
+
+.data-pad-calendar .date_navigator .month_year .select_year span:hover {
+    border: 1px solid #b6b6b6;
+    background-color: #fff;
 }
 
 .data-pad-calendar .date_navigator .month_year .select_year div.popover__content {
@@ -227,6 +247,23 @@
     border-color: #6980fe transparent transparent transparent;
 }
 
+.data-pad-calendar .date_navigator .month_year .select_year div.popover__content ul li.up.disabled,
+.data-pad-calendar .date_navigator .month_year .select_year div.popover__content ul li.down.disabled {
+    cursor: pointer;
+    background-color: #e0e0e0;
+}
+
+.data-pad-calendar .date_navigator .month_year .select_year div.popover__content ul li.up.disabled:before {
+    border-color: transparent transparent #6a6a6a transparent;
+}
+
+.data-pad-calendar .date_navigator .month_year .select_year div.popover__content ul li.down.disabled:before {
+    border-color: #6a6a6a transparent transparent transparent;
+}
+
+
+/* -- */
+
 .data-pad-calendar .date_navigator .month_year .select_year div.popover__content .popover__message {
     text-align: center;
     margin-bottom: 0px;
@@ -242,6 +279,14 @@
 
 .data-pad-calendar .date_navigator .month_year .select_month span {
     cursor: pointer;
+    border: 1px solid transparent;
+    padding: .2rem;
+    border-radius: .2rem;
+}
+
+.data-pad-calendar .date_navigator .month_year .select_month span:hover {
+    border: 1px solid #b6b6b6;
+    background-color: #fff;
 }
 
 .data-pad-calendar .date_navigator .month_year .select_month div.popover__content {
@@ -295,4 +340,25 @@
 .data-pad-calendar .date_navigator .month_year .select_month div.popover__content ul li.current {
     background-color: #00c605;
     color: #fff;
+}
+
+
+/* -- */
+
+.data-pad *:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+}
+
+
+/* --- */
+
+.data-pad * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
