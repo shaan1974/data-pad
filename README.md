@@ -64,11 +64,15 @@ Only moment.js.
 **To do: **
 
 - Time ( Am/Pm, 24 )
-- Disabled date
-- Set dedicate background color for defined dates like holidays
+- Disabled dates ( like holidays , extra parameter )
+- Set dedicate background color for defined dates like holidays ( extra parameter )
 - Example on Codepen.io
 
 **Versions: **
+
+1.1a
+
+- Create Build. Full and with no css.
 
 1.1 - ( Beat It )
 
