@@ -4,10 +4,9 @@ var templateDataPad = `
 	
 	<span class="data-pad">
 
-	<template v-if="cdebug">
-	<div style="background-color:pink;">
-	</div>
-</template>
+		<template v-if="cdebug">
+			<div style="background-color:pink;"></div>
+		</template>
 
 		<input 
 			type="text" 
@@ -45,7 +44,7 @@ var templateDataPad = `
 							</div>
 						</span>
 						
-						- 
+						&mdash; 
 					
 						<span class="select_year" :class="config.css.table_header.month_year.year">
 							<span v-on:click="popoverYears=!popoverYears;popoverMonths=false;">{{year}}</span>

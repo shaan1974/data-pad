@@ -66,7 +66,10 @@ function initDataPad(vapp)
                     this.month = moment(this.value, this.config.format).month() + 1;
                 }
 
-                //  IF A CLICK IS DONE OUTSITE THE CALENDAR, IT CLOSE IT
+                //  EXTERNAL EVENTS
+                //
+
+                //  A - IF A CLICK IS DONE OUTSITE THE CALENDAR, IT CLOSE IT
                 //
                 var cb = function(t, e)
                 {
@@ -83,7 +86,25 @@ function initDataPad(vapp)
                         t.showCalendar = false;
                     }
                 };
+
                 document.querySelector("body").addEventListener("click", cb.bind(null, this), false);
+
+                //  B - IF SCROLL/RESIZE WINDOW
+                //
+                var fct_hide_calendar = function(t, e)
+                {
+                    t.showCalendar = false;
+                };
+
+                if (this.config.closeOnScrollEvent)
+                {
+                    window.addEventListener("scroll", fct_hide_calendar.bind(null, this), false);
+                }
+
+                if (this.config.closeOnResizeEvent)
+                {
+                    window.addEventListener("resize", fct_hide_calendar.bind(null, this), false);
+                }
             },
             watch:
             {

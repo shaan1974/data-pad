@@ -14,6 +14,8 @@ var DataPad = {
                 "closeWhenDayAsBeenSelected": false,
                 "minDate": "10-07-2020",
                 "maxDate": "04-11-2020",
+                "closeOnResizeEvent": true,
+                "closeOnScrollEvent": true,
                 "css":
                 {
                     "input": "waza_input",

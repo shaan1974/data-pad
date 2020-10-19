@@ -74,6 +74,10 @@ Only moment.js.
 
 **Versions: **
 
+1.3
+
+- Add 2 options in config to hide calendar on window scroll or resize
+
 1.2 - ( Cosmos 1999 )
 
 - First version with a Build and an example.
