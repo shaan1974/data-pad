@@ -27,7 +27,7 @@ function initDataPad(vapp)
                     "popupClick": false,
                     "minYear": "",
                     "maxYear": "",
-                    "cdebug": false
+                    "cdebug": true
                 };
             },
             emits: ['vchange'],
@@ -117,16 +117,6 @@ function initDataPad(vapp)
             methods:
             {
                 /*
-                    WHEN A LINE A BOTTOM IS TOTALY FOR THE NEXT MONTH WE DON'T DISPLAY IT ON SCREEN
-                */
-                displayLine: function(tr)
-                {
-                    return tr.filter(function(o)
-                    {
-                        if (o.t === "nm") return o;
-                    }).length !== 7;
-                },
-                /*
                     RESET CALENDAR TO REVERT TO CURRENT DAY OR CURRENT MONTH/YEAR WHEN ENTER INTO THE CALENDAR
                 */
                 resetCalendar: function()
@@ -150,7 +140,7 @@ function initDataPad(vapp)
                 */
                 buildCalendar: function(month, year)
                 {
-                    console.log(month, year);
+                    // console.log(month, year);
                     var swm = this.config.firstDayOfTheWeekMonday;
                     month = month - 1;
 
@@ -227,6 +217,21 @@ function initDataPad(vapp)
                     }
 
                     // console.log(rows);
+
+                    //  CHECK IF LAST LINE IS WITH t="NM" FOR ALL CELLS
+                    //
+                    var l = rows[rows.length - 1].filter(function(o)
+                    {
+                        if (o.t === "nm") return o;
+                    }).length;
+
+                    if (l === 7)
+                    {
+                        rows.pop();
+                    }
+
+                    //  SET ROW TO MODEL
+                    //
                     this.rows = rows;
                     this.tmp_year = this.year;
                 },
@@ -323,6 +328,15 @@ function initDataPad(vapp)
                     {
                         m = 1;
                     }
+
+                    /*var t = {
+                        "pm": -1,
+                        "cm": 0,
+                        "nm": 1
+                    };
+
+                    m = t[td.t];*/
+
                     var current_d = moment("" + this.year + "-" + (this.month + m) + "-01", "YYYY-MM-DD").date(td.d);
                     var maxDate = moment(this.config.maxDate, this.config.format);
 

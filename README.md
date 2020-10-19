@@ -10,6 +10,10 @@ Still consider as in Developpement.
 
 Only moment.js.
 
+**Demo :**
+
+[Fully working demo](https://codepen.io/shaan1974/pen/LYZZjPw)
+
 **Options: **
 
 ```
@@ -69,6 +73,10 @@ Only moment.js.
 - Example on Codepen.io
 
 **Versions: **
+
+1.2 - ( Cosmos 1999 )
+
+- First version with a Build and an example.
 
 1.1a
 

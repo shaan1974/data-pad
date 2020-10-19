@@ -6,10 +6,6 @@ var templateDataPad = `
 
 	<template v-if="cdebug">
 	<div style="background-color:pink;">
-	{{this.month}}-{{this.year}}
-	{{this.config}}
-	<hr/>
-	{{this.tmp_year}}
 	</div>
 </template>
 
@@ -110,7 +106,7 @@ var templateDataPad = `
 
 				<!-- CALENDAR DAYS -->
 				<template v-for="(tr,index_tr) in rows" >
-				<tr class="calendar_days" v-if="displayLine(tr)">
+				<tr class="calendar_days">
 					
 					<template v-for="td in tr">
 						<td 
