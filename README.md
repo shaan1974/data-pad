@@ -74,7 +74,7 @@ Only moment.js.
 
 **Versions: **
 
-1.3
+1.3 ( Waza )
 
 - Add 2 options in config to hide calendar on window scroll or resize
 
