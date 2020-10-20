@@ -111,6 +111,7 @@ var templateDataPad = `
 						<td 
 							:class="[								
 								td.t , 
+								this.isSpecialDay(td.d,td.t) ? 'sd '+config.css.table_days.spd : '',
 								td.fd ? 'cbs' : '',
 								(typeof td.cd !=='undefined' ) ? 'cd '+config.css.table_days.today : '' ,  
 								(typeof td.sel !=='undefined' ) ? 'selected '+config.css.table_days.current_day : '' , 

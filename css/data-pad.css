@@ -44,6 +44,7 @@
 .data-pad-calendar table .calendar_days td {
     text-align: center;
     background-color: #fff;
+    position: relative;
 }
 
 .data-pad-calendar .month_left,
@@ -186,6 +187,7 @@
     top: 0px;
     left: -22px;
     width: 70px;
+    z-index: 1;
 }
 
 .data-pad-calendar .date_navigator .month_year .select_year div.popover__content:before {
@@ -301,6 +303,7 @@
     top: 0px;
     left: -22px;
     width: 70px;
+    z-index: 1;
 }
 
 .data-pad-calendar .date_navigator .month_year .select_month div.popover__content:before {
@@ -361,4 +364,20 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+
+/* -- */
+
+.data-pad-calendar .calendar_days td.sd:after {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 10px 10px;
+    border-color: transparent transparent #d58211 transparent;
+    bottom: 1px;
+    right: 1px;
+    position: absolute;
 }

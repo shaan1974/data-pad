@@ -27,6 +27,10 @@ function initDataPad(vapp)
                     "popupClick": false,
                     "minYear": "",
                     "maxYear": "",
+                    "today_day": moment().date(),
+                    "today_month": moment().month(),
+                    "today_year": moment().year(),
+
                     "cdebug": true
                 };
             },
@@ -40,22 +44,24 @@ function initDataPad(vapp)
 
                 //  CHECK IF MIN-MAX HAS BEEN DEFINED OR NOT
                 //
-                if (this.config.minDate === "")
+                this.config.minDate = (this.config.minDate === "") ? moment("01-01-0001", "MM-DD-YYYY").format(this.config.format) : this.config.minDate;
+                /*if (this.config.minDate === "")
                 {
                     this.config.minDate = moment("01-01-0001", "MM-DD-YYYY").format(this.config.format);
-                }
+                }*/
 
-                if (this.config.maxDate === "")
+                this.config.maxDate = (this.config.maxDate === "") ? moment("01-01-9999", "MM-DD-YYYY").format(this.config.format) : this.config.maxDate;
+                /*if (this.config.maxDate === "")
                 {
                     this.config.maxDate = moment("01-01-9999", "MM-DD-YYYY").format(this.config.format);
-                }
+                }*/
 
                 this.minYear = moment(this.config.minDate, this.config.format).year();
                 this.maxYear = moment(this.config.maxDate, this.config.format).year();
 
-                //  IF NO VALUE DEFINED FROM THE BNINDING
+                //  IF NO VALUE DEFINED FROM THE BINNDING
                 //
-                if (this.value === "")
+                /*if (this.value === "")
                 {
                     this.year = moment().year();
                     this.month = moment().month() + 1;
@@ -64,7 +70,10 @@ function initDataPad(vapp)
                 {
                     this.year = moment(this.value, this.config.format).year();
                     this.month = moment(this.value, this.config.format).month() + 1;
-                }
+                }*/
+
+                this.year = moment((this.value === "") ? new Date() : moment(this.value, this.config.format)).year();
+                this.month = moment((this.value === "") ? new Date() : moment(this.value, this.config.format)).month() + 1;
 
                 //  EXTERNAL EVENTS
                 //
@@ -105,6 +114,7 @@ function initDataPad(vapp)
                 {
                     window.addEventListener("resize", fct_hide_calendar.bind(null, this), false);
                 }
+                // console.log(this);
             },
             watch:
             {
@@ -131,8 +141,9 @@ function initDataPad(vapp)
                 */
                 ["showCalendar"]: function()
                 {
-                    this.popoverYears = false;
-                    this.popoverMonths = false;
+                    // this.popoverYears = false;
+                    // this.popoverMonths = false;
+                    this.popoverYears = this.popoverMonths = false;
                 }
             },
             methods:
@@ -143,6 +154,7 @@ function initDataPad(vapp)
                 resetCalendar: function()
                 {
                     var year, month;
+
                     if (this.value === "")
                     {
                         year = moment().year();
@@ -161,18 +173,22 @@ function initDataPad(vapp)
                 */
                 buildCalendar: function(month, year)
                 {
-                    // console.log(month, year);
                     var swm = this.config.firstDayOfTheWeekMonday;
-                    month = month - 1;
+                    // month = month - 1;
+                    month--;
 
-                    var today = new Date();
+                    /*var today = new Date();
                     var today_day = today.getDate();
                     var today_month = today.getMonth();
-                    var today_year = today.getFullYear();
+                    var today_year = today.getFullYear();*/
                     var firstDay = (new Date(year, month)).getDay();
                     var co = 0;
+                    var c_year = moment(this.value, this.config.format).year();
+                    var c_month = moment(this.value, this.config.format).month();
+                    var c_day;
 
-                    if (swm === true)
+                    // if (swm === true)
+                    if (swm)
                     {
                         if (firstDay === 0)
                         {
@@ -182,12 +198,10 @@ function initDataPad(vapp)
                         co = 1;
                     }
 
-                    // var dayInPreviousMmonth = this.daysInMonth((month !== 0) ? month - 1 : 11, (month !== 0) ? year : year - 1);
                     var dayInPreviousMmonth = moment((new Date(year, month))).subtract(1, 'months').daysInMonth();
                     var rows = [];
                     var d = 1;
                     var o;
-                    // var dicm = this.daysInMonth(month, year);
                     var dicm = moment((new Date(year, month))).daysInMonth();
 
                     for (i = (0 + co); i < (6 + co); i++)
@@ -213,13 +227,14 @@ function initDataPad(vapp)
                                 o.d = d;
                                 o.t = "cm";
 
-                                if (d === today_day && year === today_year && month === today_month && this.config.showCurrentDay === true)
+                                // if (d === today_day && year === today_year && month === today_month && this.config.showCurrentDay === true)
+                                if (d === this.today_day && year === this.today_year && month === this.today_month && this.config.showCurrentDay === true)
                                 {
                                     o.cd = true;
                                 }
 
-                                c_year = moment(this.value, this.config.format).year();
-                                c_month = moment(this.value, this.config.format).month();
+                                // c_year = moment(this.value, this.config.format).year();
+                                // c_month = moment(this.value, this.config.format).month();
                                 c_day = moment(this.value, this.config.format).date();
 
                                 if (d === c_day && year === c_year && month === c_month)
@@ -307,61 +322,68 @@ function initDataPad(vapp)
                 */
                 isMinDateBefore: function(td)
                 {
-                    if (this.config.minDate === "") return false;
+                    /*
+                    var current_d = moment("" + this.year + "-" + this.month + "-01", "YYYY-MM-DD");
 
-                    var m = 0;
+                    switch (td.t)
+                    {
+                        case "pm":
+                            current_d.subtract(1, 'months').date(td.d);
+                            break;
+                        case "cm":
+                            current_d.date(td.d);
+                            break;
+                        case "nm":
+                            current_d.add(1, 'months').date(td.d);
+                            break;
+                    }
+                    */
+                    /* -- */
+                    // var tt = ["pm", "cm", "nm"];
 
-                    if (td.t === 'pm')
-                    {
-                        m = -1;
-                    }
-                    else if (td.t === 'cm')
-                    {
-                        m = 0;
-                    }
-                    else if (td.t === 'nm')
-                    {
-                        m = 1;
-                    }
-                    var current_d = moment("" + this.year + "-" + (this.month + m) + "-01", "YYYY-MM-DD").date(td.d);
+                    var current_d = moment("" + this.year + "-" + this.month + "-01", "YYYY-MM-DD");
+                    var f = ["pm", "cm", "nm"].indexOf(td.t);
+
+                    current_d.add((f - 1), 'months').date(td.d);
+                    /* -- */
+
                     var minDate = moment(this.config.minDate, this.config.format);
 
-                    return minDate.format("DD-MM-YYYY"), current_d.isSameOrBefore(minDate);
+                    return current_d.isSameOrBefore(minDate);
                 },
                 /*
                     TO KNOW IF CURRENT DATE IF AFTER MAx DATE
                 */
                 isMaxDateAfter: function(td)
                 {
-                    if (this.config.maxDate === "") return false;
+                    /*
+                    var current_d = moment("" + this.year + "-" + this.month + "-01", "YYYY-MM-DD");
 
-                    var m = 0;
-
-                    if (td.t === 'pm')
+                    switch (td.t)
                     {
-                        m = -1;
+                        case "pm":
+                            current_d.subtract(1, 'months').date(td.d);
+                            break;
+                        case "cm":
+                            current_d.date(td.d);
+                            break;
+                        case "nm":
+                            current_d.add(1, 'months').date(td.d);
+                            break;
                     }
-                    else if (td.t === 'cm')
-                    {
-                        m = 0;
-                    }
-                    else if (td.t === 'nm')
-                    {
-                        m = 1;
-                    }
+                    */
+                    /* -- */
+                    // var tt = ["pm", "cm", "nm"];
 
-                    /*var t = {
-                        "pm": -1,
-                        "cm": 0,
-                        "nm": 1
-                    };
+                    var current_d = moment("" + this.year + "-" + this.month + "-01", "YYYY-MM-DD");
+                    var f = ["pm", "cm", "nm"].indexOf(td.t);
 
-                    m = t[td.t];*/
+                    current_d.add((f - 1), 'months').date(td.d);
+                    /* -- */
 
-                    var current_d = moment("" + this.year + "-" + (this.month + m) + "-01", "YYYY-MM-DD").date(td.d);
                     var maxDate = moment(this.config.maxDate, this.config.format);
 
-                    return maxDate.format("DD-MM-YYYY"), current_d.isSameOrAfter(maxDate);
+                    return current_d.isSameOrAfter(maxDate);
                 },
                 /*
                     CHECK IF DATE IS IS RANGE FOR MONTH POPOVER
@@ -393,6 +415,51 @@ function initDataPad(vapp)
                     else if (year >= this.minYear && year <= this.maxYear)
                     {
                         return true;
+                    }
+
+                    return false;
+                },
+                /*
+
+                */
+                isSpecialDay: function(d, t)
+                {
+                    if (typeof this.config.special_days !== "undefined")
+                    {
+                        /* -- */
+                        // var tt = ["pm", "cm", "nm"];
+
+                        var current_d = moment("" + this.year + "-" + this.month + "-01", "YYYY-MM-DD");
+                        var f = ["pm", "cm", "nm"].indexOf(t);
+
+                        current_d.add((f - 1), 'months').date(d);
+                        /* -- */
+
+                        /*
+                        current_d = moment("" + this.year + "-" + this.month + "-01", "YYYY-MM-DD");
+                        switch (t)
+                        {
+                            case "pm":
+                                current_d.subtract(1, 'months').date(d);
+                                break;
+                            case "cm":
+                                current_d.date(d);
+                                break;
+                            case "nm":
+                                current_d.add(1, 'months').date(d);
+                                break;
+                        }
+                        */
+
+                        /*
+                        if (this.config.special_days.days.indexOf("" + current_d.format("DD-MM-YYYY") + "") !== -1)
+                        {
+                            return true;
+                        }
+
+                        return false;
+                        */
+                        return (this.config.special_days.days.indexOf("" + current_d.format("DD-MM-YYYY") + "") !== -1) ? true : false;
                     }
 
                     return false;

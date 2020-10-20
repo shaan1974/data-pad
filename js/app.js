@@ -13,7 +13,7 @@ var DataPad = {
                 "showCurrentDay": true,
                 "closeWhenDayAsBeenSelected": false,
                 "minDate": "10-07-2020",
-                "maxDate": "04-11-2020",
+                "maxDate": "04-11-2021",
                 "closeOnResizeEvent": true,
                 "closeOnScrollEvent": true,
                 "css":
@@ -46,10 +46,16 @@ var DataPad = {
                         "current_month": "waza_cm",
                         "next_month": "waza_nm",
                         "current_day": "waza_cd",
-                        "today": "waza_td"
+                        "today": "waza_td",
+                        "spd": "waza_sp"
                     }
                 },
-                "format": "DD-MM-YYYY"
+                "format": "DD-MM-YYYY",
+                "special_days":
+                {
+                    "days": ["25-12-2020", "01-01-2021"],
+                    "css": "sd"
+                }
             },
             "value": "16-09-2020",
             "value_": ""
