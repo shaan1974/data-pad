@@ -47,15 +47,13 @@ var DataPad = {
                         "next_month": "waza_nm",
                         "current_day": "waza_cd",
                         "today": "waza_td",
-                        "spd": "waza_sp"
+                        "spd": "waza_sp",
+                        "nsd": "waza_cbs"
                     }
                 },
                 "format": "DD-MM-YYYY",
-                "special_days":
-                {
-                    "days": ["25-12-2020", "01-01-2021"],
-                    "css": "sd"
-                }
+                "special_days": ["09-11-2020,13-11-2020", "25-12-2020", "01-01-2021"],
+                "disabled_days": ["07-12-2020", "23-11-2020,27-11-2020"]
             },
             "value": "16-09-2020",
             "value_": ""
