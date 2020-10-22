@@ -16,7 +16,8 @@ var templateDataPad = `
 			class="data-pad-input" 
 			:class="config.css.input">
 		
-		<div v-if="showCalendar" class="data-pad-calendar" :class="config.css.table_container">
+		<transition :name="computedTransition">
+		<div v-if="showCalendar" class="data-pad-calendar" :class="[config.css.table_container]">
 			
 			<table :class="config.css.table">
 				
@@ -113,6 +114,7 @@ var templateDataPad = `
 								td.t , 
 								this.checkDay(td.d,td.t,'special_days') ? 'sd '+config.css.table_days.spd : '',
 								this.checkDay(td.d,td.t,'disabled_days') ? 'cbs '+config.css.table_days.nsd : '',
+								this.checkDay(td.d,td.t,'disabledWeekend') ? 'cbs '+config.css.table_days.diw : '',
 								td.fd ? 'cbs' : '',
 								(typeof td.cd !=='undefined' ) ? 'cd '+config.css.table_days.today : '' ,  
 								(typeof td.sel !=='undefined' ) ? 'selected '+config.css.table_days.current_day : '' , 
@@ -130,6 +132,7 @@ var templateDataPad = `
 			</table>
 
 		</div>
+		</transition>
 
 	</span>
 `;

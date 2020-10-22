@@ -48,14 +48,19 @@ var DataPad = {
                         "current_day": "waza_cd",
                         "today": "waza_td",
                         "spd": "waza_sp",
-                        "nsd": "waza_cbs"
+                        "nsd": "waza_cbs",
+                        "diw": "waza_diw"
                     }
                 },
                 "format": "DD-MM-YYYY",
                 "special_days": ["09-11-2020,13-11-2020", "25-12-2020", "01-01-2021"],
-                "disabled_days": ["07-12-2020", "23-11-2020,27-11-2020"]
+                "disabled_days": ["07-12-2020", "23-11-2020,27-11-2020"],
+                "disabledWeekendEnds": false,
+                "position": "auto",
+                /* down,up,right,auto */
+                "fadesAnimation": true
             },
-            "value": "16-09-2020",
+            "value": "01-11-2020",
             "value_": ""
         };
     },

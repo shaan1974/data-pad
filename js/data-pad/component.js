@@ -120,13 +120,74 @@ function initDataPad(vapp)
                 /*
                     WHEN THE CALENDAR IS SHOWN, POPOVERS ARE HIDDEN ( MONTHS, YEARS )
                 */
-                ["showCalendar"]: function()
+                ["showCalendar"]: function(v, ov)
                 {
                     this.popoverYears = this.popoverMonths = false;
+
+                    if (v /* === true*/ )
+                    {
+                        this.$nextTick(() =>
+                        {
+                            if (this.config.position !== "auto")
+                            {
+                                this.setCalendarPosition(this.config.position.toUpperCase());
+                            }
+                            else
+                            {
+                                var cal = this.$el.querySelector(".data-pad-calendar");
+
+                                if (this.isInViewport(cal) === false)
+                                {
+                                    //  TRY RIGHT
+                                    this.setCalendarPosition("RIGHT");
+
+                                    if (this.isInViewport(cal) === false)
+                                    {
+                                        // SET UP
+                                        this.setCalendarPosition("UP");
+
+                                        if (this.isInViewport(cal) === false)
+                                        {
+                                            this.setCalendarPosition("DOWN");
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            },
+            computed:
+            {
+                "computedTransition": function()
+                {
+                    return (this.config.fadesAnimation) ? "fade" : "no-fade";
                 }
             },
             methods:
             {
+                /*
+                    SET CALENDAR POSTION
+                */
+                setCalendarPosition: function(p)
+                {
+                    var r1 = this.$el.querySelector("input").getBoundingClientRect();
+                    var r2 = this.$el.querySelector(".data-pad-calendar").getBoundingClientRect();
+
+                    switch (p)
+                    {
+                        case "DOWN":
+                            this.$el.querySelector(".data-pad-calendar").style.transform = "translate(0px 0px)";
+                            break;
+                        case "UP":
+
+                            this.$el.querySelector(".data-pad-calendar").style.transform = "translateY(-" + (r1.height + r2.height) + "px)";
+                            break;
+                        case "RIGHT":
+                            this.$el.querySelector(".data-pad-calendar").style.transform = "translate(" + (r1.width) + "px,-" + (r1.height) + "px)";
+                            break;
+                    }
+                },
                 /*
                     RESET CALENDAR TO REVERT TO CURRENT DAY OR CURRENT MONTH/YEAR WHEN ENTER INTO THE CALENDAR
                 */
@@ -354,13 +415,14 @@ function initDataPad(vapp)
                 {
                     // var comp = this.config["special_days"];
                     var comp = this.config["" + m + ""];
+                    var current_d, f;
 
                     if (typeof comp !== "undefined")
                     {
-                        var current_d = moment("" + this.year + "-" + this.month + "-01", "YYYY-MM-DD");
+                        current_d = moment("" + this.year + "-" + this.month + "-01", "YYYY-MM-DD");
                         //  RECALCULATE DATE DEPENDING OF THE TYPE, "PM","CM","NM"
                         //
-                        var f = ["pm", "cm", "nm"].indexOf(t);
+                        f = ["pm", "cm", "nm"].indexOf(t);
 
                         current_d.add((f - 1), 'months').date(d);
 
@@ -387,8 +449,40 @@ function initDataPad(vapp)
                             }
                         }
                     }
+                    else
+                    {
+                        if (m === "disabledWeekend" && this.config.disabledWeekendEnds === true)
+                        {
+                            // console.log("IS WEEKEND");
+
+                            current_d = moment("" + this.year + "-" + this.month + "-01", "YYYY-MM-DD");
+                            f = ["pm", "cm", "nm"].indexOf(t);
+
+                            var dofw = current_d.add((f - 1), 'months').date(d).day();
+
+                            if (dofw === 0 || dofw === 6)
+                            {
+                                return true;
+                            }
+
+                            return false;
+                        }
+                    }
 
                     return false;
+                },
+                /*
+                    IS IN VIEW PORT
+                */
+                isInViewport: function(element)
+                {
+                    var rect = element.getBoundingClientRect();
+                    return (
+                        rect.top >= 0 &&
+                        rect.left >= 0 &&
+                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                    );
                 }
             }
         }

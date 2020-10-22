@@ -8,7 +8,7 @@ Still consider as in Developpement.
 
 **Dependecies :**
 
-Only moment.js.
+Only moment.js. So Read Momentjs documentation to know more about date formating.
 
 **Demo :**
 
@@ -57,12 +57,17 @@ Only moment.js.
                 "current_day": "waza_cd",
                 "today": "waza_td",
                 "spd": "waza_sp",
-                "nsd": "waza_cbs"
+                "nsd": "waza_cbs",
+                "diw": "waza_diw"
             }
         },
         "format": "DD-MM-YYYY",
         "special_days": ["09-11-2020,13-11-2020", "25-12-2020", "01-01-2021"],
-        "disabled_days": ["07-12-2020", "23-11-2020,27-11-2020"]
+        "disabled_days": ["07-12-2020", "23-11-2020,27-11-2020"],
+        "disabledWeekendEnds": false,
+        "position": "auto",
+        /* down,up,right,auto */
+        "fadesAnimation": true
     }
 ```
 
@@ -73,10 +78,14 @@ Only moment.js.
 **To do: **
 
 - New feature - Add Time ( Am/Pm, 24 ) ?
-- Positionning of calendar on Top if Bottom has not enough spaces
-- Options - Allow selecting weekend days
 
 **Versions: **
+
+1.6 ( 2Unlimited - Tribal Dance )
+
+- Option to set Allow/not Allow weekend days.
+- Option to positionning calendar ( auto, down, up, right )
+- Option to fadeIn/fadeOut the calendar.
 
 1.5 ( Abba - Voulez-vous ? )
 
