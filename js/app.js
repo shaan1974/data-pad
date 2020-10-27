@@ -9,12 +9,12 @@ var DataPad = {
         return {
             "PadConfig":
             {
-                "firstDayOfTheWeekMonday": true,
+                /*"firstDayOfTheWeekMonday": true,
                 "showCurrentDay": true,
-                "closeWhenDayAsBeenSelected": false,
+                "closeWhenDayAsBeenSelected": false,*/
                 "minDate": "10-07-2020",
                 "maxDate": "04-11-2021",
-                "closeOnResizeEvent": true,
+                /*"closeOnResizeEvent": true,
                 "closeOnScrollEvent": true,
                 "css":
                 {
@@ -52,13 +52,15 @@ var DataPad = {
                         "diw": "waza_diw"
                     }
                 },
+                */
                 "format": "DD-MM-YYYY",
+                /*
                 "special_days": ["09-11-2020,13-11-2020", "25-12-2020", "01-01-2021"],
                 "disabled_days": ["07-12-2020", "23-11-2020,27-11-2020"],
                 "disabledWeekendEnds": false,
                 "position": "auto",
-                /* down,up,right,auto */
                 "fadesAnimation": true
+                */
             },
             "value": "01-11-2020",
             "value_": ""

@@ -31,7 +31,60 @@ function initDataPad(vapp)
                     "today_month": moment().month(),
                     "today_year": moment().year(),
 
-                    "cdebug": true
+                    "cdebug": true,
+
+                    "zconfig":
+                    {
+                        "firstDayOfTheWeekMonday": true,
+                        "showCurrentDay": true,
+                        "closeWhenDayAsBeenSelected": true,
+                        "minDate": "",
+                        "maxDate": "",
+                        "closeOnResizeEvent": true,
+                        "closeOnScrollEvent": true,
+                        "css":
+                        {
+                            "input": "",
+                            "table_container": "",
+                            "table": "",
+                            "table_header":
+                            {
+                                "date_navigator": "",
+                                "right_arrow": "",
+                                "left_arrow": "",
+                                "month_year":
+                                {
+                                    "month_year": "",
+                                    "month": "",
+                                    "month_popover": "",
+                                    "year": "",
+                                    "year_popover": ""
+                                }
+                            },
+                            "table_days_names":
+                            {
+                                "row": "",
+                                "columns": ""
+                            },
+                            "table_days":
+                            {
+                                "previous_month": "",
+                                "current_month": "",
+                                "next_month": "",
+                                "current_day": "",
+                                "today": "",
+                                "spd": "",
+                                "nsd": "",
+                                "diw": ""
+                            }
+                        },
+                        "format": "DD-MM-YYYY",
+                        "special_days": [],
+                        "disabled_days": [],
+                        "disabledWeekendEnds": false,
+                        "position": "auto",
+                        "fadesAnimation": true
+                    }
                 };
             },
             emits: ['vchange'],
@@ -39,22 +92,32 @@ function initDataPad(vapp)
             template: '' + templateDataPad.replace(/<!--.*?-->/gm, '') + '',
             mounted: function()
             {
-                this.swm = this.config.firstDayOfTheWeekMonday;
+                //  BUILD INTERNAL CONFIGURATION
+                //
+                var keys = Object.keys(this.config);
+                for (var i = 0; i < keys.length; i++)
+                {
+                    this.zconfig["" + keys[i] + ""] = this.config["" + keys[i] + ""];
+                }
+
+                //  SET FIRST DAY OF THE WEEK
+                //
+                this.swm = this.zconfig.firstDayOfTheWeekMonday;
 
                 //  CHECK IF MIN-MAX HAS BEEN DEFINED OR NOT
                 //
-                this.config.minDate = (this.config.minDate === "") ? moment("01-01-0001", "MM-DD-YYYY").format(this.config.format) : this.config.minDate;
-                this.config.maxDate = (this.config.maxDate === "") ? moment("01-01-9999", "MM-DD-YYYY").format(this.config.format) : this.config.maxDate;
+                this.zconfig.minDate = (this.zconfig.minDate === "") ? moment("01-01-0001", "MM-DD-YYYY").format(this.zconfig.format) : this.zconfig.minDate;
+                this.zconfig.maxDate = (this.zconfig.maxDate === "") ? moment("01-01-9999", "MM-DD-YYYY").format(this.zconfig.format) : this.zconfig.maxDate;
 
                 //  DEFINE MIN-MAX YEARS
                 //
-                this.minYear = moment(this.config.minDate, this.config.format).year();
-                this.maxYear = moment(this.config.maxDate, this.config.format).year();
+                this.minYear = moment(this.zconfig.minDate, this.zconfig.format).year();
+                this.maxYear = moment(this.zconfig.maxDate, this.zconfig.format).year();
 
                 //  DEFINE YEAR AND MONTH FOR CALENDAR
                 //
-                this.year = moment((this.value === "") ? new Date() : moment(this.value, this.config.format)).year();
-                this.month = moment((this.value === "") ? new Date() : moment(this.value, this.config.format)).month() + 1;
+                this.year = moment((this.value === "") ? new Date() : moment(this.value, this.zconfig.format)).year();
+                this.month = moment((this.value === "") ? new Date() : moment(this.value, this.zconfig.format)).month() + 1;
 
                 //  EXTERNAL EVENTS
                 //
@@ -87,12 +150,12 @@ function initDataPad(vapp)
                     t.showCalendar = false;
                 };
 
-                if (this.config.closeOnScrollEvent)
+                if (this.zconfig.closeOnScrollEvent)
                 {
                     window.addEventListener("scroll", fct_hide_calendar.bind(null, this), false);
                 }
 
-                if (this.config.closeOnResizeEvent)
+                if (this.zconfig.closeOnResizeEvent)
                 {
                     window.addEventListener("resize", fct_hide_calendar.bind(null, this), false);
                 }
@@ -128,9 +191,9 @@ function initDataPad(vapp)
                     {
                         this.$nextTick(() =>
                         {
-                            if (this.config.position !== "auto")
+                            if (this.zconfig.position !== "auto")
                             {
-                                this.setCalendarPosition(this.config.position.toUpperCase());
+                                this.setCalendarPosition(this.zconfig.position.toUpperCase());
                             }
                             else
                             {
@@ -161,7 +224,7 @@ function initDataPad(vapp)
             {
                 "computedTransition": function()
                 {
-                    return (this.config.fadesAnimation) ? "fade" : "no-fade";
+                    return (this.zconfig.fadesAnimation) ? "fade" : "no-fade";
                 }
             },
             methods:
@@ -202,8 +265,8 @@ function initDataPad(vapp)
                     }
                     else
                     {
-                        year = moment(this.value, this.config.format).year();
-                        month = moment(this.value, this.config.format).month() + 1;
+                        year = moment(this.value, this.zconfig.format).year();
+                        month = moment(this.value, this.zconfig.format).month() + 1;
                     }
 
                     this.buildCalendar(month, year);
@@ -213,13 +276,13 @@ function initDataPad(vapp)
                 */
                 buildCalendar: function(month, year)
                 {
-                    var swm = this.config.firstDayOfTheWeekMonday;
+                    var swm = this.zconfig.firstDayOfTheWeekMonday;
                     month--;
 
                     var firstDay = (new Date(year, month)).getDay();
                     var co = 0;
-                    var c_year = moment(this.value, this.config.format).year();
-                    var c_month = moment(this.value, this.config.format).month();
+                    var c_year = moment(this.value, this.zconfig.format).year();
+                    var c_month = moment(this.value, this.zconfig.format).month();
                     var c_day;
 
                     if (swm)
@@ -261,12 +324,12 @@ function initDataPad(vapp)
                                 o.d = d;
                                 o.t = "cm";
 
-                                if (d === this.today_day && year === this.today_year && month === this.today_month && this.config.showCurrentDay === true)
+                                if (d === this.today_day && year === this.today_year && month === this.today_month && this.zconfig.showCurrentDay === true)
                                 {
                                     o.cd = true;
                                 }
 
-                                c_day = moment(this.value, this.config.format).date();
+                                c_day = moment(this.value, this.zconfig.format).date();
 
                                 if (d === c_day && year === c_year && month === c_month)
                                 {
@@ -312,9 +375,9 @@ function initDataPad(vapp)
                         return false;
                     }
 
-                    this.$emit('vchange', moment("" + this.year + "-" + this.month + "-" + td.d, "YYYY-MM-DD").format(this.config.format));
+                    this.$emit('vchange', moment("" + this.year + "-" + this.month + "-" + td.d, "YYYY-MM-DD").format(this.zconfig.format));
 
-                    if (this.config.closeWhenDayAsBeenSelected === true)
+                    if (this.zconfig.closeWhenDayAsBeenSelected === true)
                     {
                         this.showCalendar = false;
                     }
@@ -356,7 +419,7 @@ function initDataPad(vapp)
 
                     current_d.add((f - 1), 'months').date(td.d);
 
-                    var minDate = moment(this.config.minDate, this.config.format);
+                    var minDate = moment(this.zconfig.minDate, this.zconfig.format);
 
                     return current_d.isSameOrBefore(minDate);
                 },
@@ -370,7 +433,7 @@ function initDataPad(vapp)
 
                     current_d.add((f - 1), 'months').date(td.d);
 
-                    var maxDate = moment(this.config.maxDate, this.config.format);
+                    var maxDate = moment(this.zconfig.maxDate, this.zconfig.format);
 
                     return current_d.isSameOrAfter(maxDate);
                 },
@@ -380,8 +443,8 @@ function initDataPad(vapp)
                 isMonthInRange: function(year, month)
                 {
                     var m_date = moment("" + year + "-" + month + "-01", "YYYY-MM-DD");
-                    var minD = moment(this.config.minDate, "" + this.config.format + "");
-                    var maxD = moment(this.config.maxDate, "" + this.config.format + "");
+                    var minD = moment(this.zconfig.minDate, "" + this.zconfig.format + "");
+                    var maxD = moment(this.zconfig.maxDate, "" + this.zconfig.format + "");
 
                     //  IF THE LAST DAY IN MIN MONTH IS NOT THE LAST DAY OF THIS MONTH WE REMOVE THE RANGE OF MONTH -1
                     //
@@ -413,8 +476,8 @@ function initDataPad(vapp)
                 */
                 checkDay: function(d, t, m)
                 {
-                    // var comp = this.config["special_days"];
-                    var comp = this.config["" + m + ""];
+                    // var comp = this.zconfig["special_days"];
+                    var comp = this.zconfig["" + m + ""];
                     var current_d, f;
 
                     if (typeof comp !== "undefined")
@@ -426,12 +489,12 @@ function initDataPad(vapp)
 
                         current_d.add((f - 1), 'months').date(d);
 
-                        // return (this.config.special_days.indexOf("" + current_d.format(this.config.format) + "") !== -1) ? true : false;
+                        // return (this.zconfig.special_days.indexOf("" + current_d.format(this.zconfig.format) + "") !== -1) ? true : false;
                         for (var i = 0; i < comp.length; i++)
                         {
-                            if (comp[i].length === current_d.format(this.config.format).length)
+                            if (comp[i].length === current_d.format(this.zconfig.format).length)
                             {
-                                if (comp[i] === current_d.format(this.config.format))
+                                if (comp[i] === current_d.format(this.zconfig.format))
                                 {
                                     return true;
                                 }
@@ -439,8 +502,8 @@ function initDataPad(vapp)
                             else
                             {
                                 v = comp[i].split(",");
-                                v[0] = moment(v[0], this.config.format);
-                                v[1] = moment(v[1], this.config.format);
+                                v[0] = moment(v[0], this.zconfig.format);
+                                v[1] = moment(v[1], this.zconfig.format);
 
                                 if (current_d.isSameOrAfter(v[0]) && current_d.isSameOrBefore(v[1]))
                                 {
@@ -451,7 +514,7 @@ function initDataPad(vapp)
                     }
                     else
                     {
-                        if (m === "disabledWeekend" && this.config.disabledWeekendEnds === true)
+                        if (m === "disabledWeekend" && this.zconfig.disabledWeekendEnds === true)
                         {
                             // console.log("IS WEEKEND");
 

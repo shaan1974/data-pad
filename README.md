@@ -77,9 +77,13 @@ Only moment.js. So Read Momentjs documentation to know more about date formating
 
 **To do: **
 
-- New feature - Add Time ( Am/Pm, 24 ) ?
+- No more ideas.
 
 **Versions: **
+
+1.7 ( The Ark of Truth - Stargate )
+
+- Base configuration is included into the component. So only "format" is really needed into the configuration.
 
 1.6 ( 2Unlimited - Tribal Dance )
 

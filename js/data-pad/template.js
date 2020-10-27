@@ -14,25 +14,25 @@ var templateDataPad = `
 			v-bind:value="value" 
 			v-on:click="this.showCalendar=!this.showCalendar;(this.showCalendar) ? this.resetCalendar() : '';" 
 			class="data-pad-input" 
-			:class="config.css.input">
+			:class="zconfig.css.input">
 		
 		<transition :name="computedTransition">
-		<div v-if="showCalendar" class="data-pad-calendar" :class="[config.css.table_container]">
+		<div v-if="showCalendar" class="data-pad-calendar" :class="[zconfig.css.table_container]">
 			
-			<table :class="config.css.table">
+			<table :class="zconfig.css.table">
 				
 				<!-- HEAD -->
-				<tr class="date_navigator" :class="config.css.table_header.date_navigator">
+				<tr class="date_navigator" :class="zconfig.css.table_header.date_navigator">
 
 					<th 
-						v-on:click="(config.css.table_header.left_arrow, rows[0][0].fd===true ) ? '': this.month--;this.popoverYears=false;this.popoverMonths=false;" 
-						:class="[config.css.table_header.left_arrow, rows[0][0].fd===true ? 'disabled' : 'month_left' ]">&#160;</th>
+						v-on:click="(zconfig.css.table_header.left_arrow, rows[0][0].fd===true ) ? '': this.month--;this.popoverYears=false;this.popoverMonths=false;" 
+						:class="[zconfig.css.table_header.left_arrow, rows[0][0].fd===true ? 'disabled' : 'month_left' ]">&#160;</th>
 					
-					<th colspan="5" class="month_year" :class="config.css.table_header.month_year.month_year">
+					<th colspan="5" class="month_year" :class="zconfig.css.table_header.month_year.month_year">
 
-						<span class="select_month" :class="config.css.table_header.month_year.month">
+						<span class="select_month" :class="zconfig.css.table_header.month_year.month">
 							<span v-on:click="popoverMonths=!popoverMonths;popoverYears=false;">{{this.labels.months[month-1]}}</span>
-							<div class="popover__content" v-if="popoverMonths" :class="config.css.table_header.month_year.month_popover">
+							<div class="popover__content" v-if="popoverMonths" :class="zconfig.css.table_header.month_year.month_popover">
 								<p class="popover__message">
 									<ul>
 										<template v-for="(m,index) in this.labels.months" >
@@ -47,9 +47,9 @@ var templateDataPad = `
 						
 						&mdash; 
 					
-						<span class="select_year" :class="config.css.table_header.month_year.year">
+						<span class="select_year" :class="zconfig.css.table_header.month_year.year">
 							<span v-on:click="popoverYears=!popoverYears;popoverMonths=false;">{{year}}</span>
-							<div class="popover__content" v-if="popoverYears" :class="config.css.table_header.month_year.year_popover">
+							<div class="popover__content" v-if="popoverYears" :class="zconfig.css.table_header.month_year.year_popover">
 								<p class="popover__message">
 									<ul @wheel.prevent="scrollYears($event)">
 										
@@ -85,21 +85,21 @@ var templateDataPad = `
 
 					<th 
 						v-on:click="(rows[rows.length-1][rows[rows.length-1].length-1].fd===true) ? '' : this.month++;this.popoverYears=false;this.popoverMonths=false;" 
-						:class="[config.css.table_header.right_arrow , rows[rows.length-1][rows[rows.length-1].length-1].fd===true ? 'disabled' : 'month_right']">&#160;</th>
+						:class="[zconfig.css.table_header.right_arrow , rows[rows.length-1][rows[rows.length-1].length-1].fd===true ? 'disabled' : 'month_right']">&#160;</th>
 
 				</tr>
 				<!-- /HEAD -->
 
 				<!-- DAYS NAMES -->
-				<tr class="days_names" :class="config.css.table_days_names.row">
-					<template v-if="config.firstDayOfTheWeekMonday">				
+				<tr class="days_names" :class="zconfig.css.table_days_names.row">
+					<template v-if="zconfig.firstDayOfTheWeekMonday">				
 						<template v-for="n in 6">
-							<th :class="config.css.table_days_names.columns">{{this.labels.days[n]}}</th>
+							<th :class="zconfig.css.table_days_names.columns">{{this.labels.days[n]}}</th>
 						</template>
-						<th :class="config.css.table_days_names.columns">{{this.labels.days[0]}}</th>
+						<th :class="zconfig.css.table_days_names.columns">{{this.labels.days[0]}}</th>
 					</template>				
 					<template v-else>
-						<th v-for="dn in this.labels.days" v-html="dn" :class="config.css.table_days_names.columns"></th>
+						<th v-for="dn in this.labels.days" v-html="dn" :class="zconfig.css.table_days_names.columns"></th>
 					</template>
 				</tr>
 				<!-- /DAYS NAMES -->
@@ -112,15 +112,15 @@ var templateDataPad = `
 						<td 
 							:class="[								
 								td.t , 
-								this.checkDay(td.d,td.t,'special_days') ? 'sd '+config.css.table_days.spd : '',
-								this.checkDay(td.d,td.t,'disabled_days') ? 'cbs '+config.css.table_days.nsd : '',
-								this.checkDay(td.d,td.t,'disabledWeekend') ? 'cbs '+config.css.table_days.diw : '',
+								this.checkDay(td.d,td.t,'special_days') ? 'sd '+zconfig.css.table_days.spd : '',
+								this.checkDay(td.d,td.t,'disabled_days') ? 'cbs '+zconfig.css.table_days.nsd : '',
+								this.checkDay(td.d,td.t,'disabledWeekend') ? 'cbs '+zconfig.css.table_days.diw : '',
 								td.fd ? 'cbs' : '',
-								(typeof td.cd !=='undefined' ) ? 'cd '+config.css.table_days.today : '' ,  
-								(typeof td.sel !=='undefined' ) ? 'selected '+config.css.table_days.current_day : '' , 
-								td.t==='pm' ? ''+config.css.table_days.previous_month+'' : '' , 
-								td.t==='cm' ? ''+config.css.table_days.current_month+'' : '' , 
-								td.t==='nm' ? ''+config.css.table_days.next_month+'' : '' ]" 
+								(typeof td.cd !=='undefined' ) ? 'cd '+zconfig.css.table_days.today : '' ,  
+								(typeof td.sel !=='undefined' ) ? 'selected '+zconfig.css.table_days.current_day : '' , 
+								td.t==='pm' ? ''+zconfig.css.table_days.previous_month+'' : '' , 
+								td.t==='cm' ? ''+zconfig.css.table_days.current_month+'' : '' , 
+								td.t==='nm' ? ''+zconfig.css.table_days.next_month+'' : '' ]" 
 							v-on:click="setDate(td)"><div class="blk">{{td.d}}</div>
 						</td>
 					</template>
