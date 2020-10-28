@@ -31,7 +31,7 @@ function initDataPad(vapp)
                     "today_month": moment().month(),
                     "today_year": moment().year(),
 
-                    "cdebug": true,
+                    "cdebug": false,
 
                     "zconfig":
                     {
@@ -216,6 +216,8 @@ function initDataPad(vapp)
                                     }
                                 }
                             }
+
+                            this.resetCalendar();
                         });
                     }
                 }
@@ -268,6 +270,9 @@ function initDataPad(vapp)
                         year = moment(this.value, this.zconfig.format).year();
                         month = moment(this.value, this.zconfig.format).month() + 1;
                     }
+
+                    this.month = month;
+                    this.year = year;
 
                     this.buildCalendar(month, year);
                 },

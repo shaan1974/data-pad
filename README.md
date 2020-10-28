@@ -81,6 +81,10 @@ Only moment.js. So Read Momentjs documentation to know more about date formating
 
 **Versions: **
 
+1.8 ( Ausländer - Rammstein )
+
+- I try to integrate this component into my Data-Greed projet. I'v correct some bugs.
+
 1.7 ( The Ark of Truth - Stargate )
 
 - Base configuration is included into the component. So only "format" is really needed into the configuration.

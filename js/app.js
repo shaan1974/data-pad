@@ -12,8 +12,8 @@ var DataPad = {
                 /*"firstDayOfTheWeekMonday": true,
                 "showCurrentDay": true,
                 "closeWhenDayAsBeenSelected": false,*/
-                "minDate": "10-07-2020",
-                "maxDate": "04-11-2021",
+                /*"minDate": "10-07-2020",
+                "maxDate": "04-11-2021",*/
                 /*"closeOnResizeEvent": true,
                 "closeOnScrollEvent": true,
                 "css":
@@ -53,7 +53,8 @@ var DataPad = {
                     }
                 },
                 */
-                "format": "DD-MM-YYYY",
+                "format2": "DD-MM-YYYY",
+                "format": "YYYY-MM-DD",
                 /*
                 "special_days": ["09-11-2020,13-11-2020", "25-12-2020", "01-01-2021"],
                 "disabled_days": ["07-12-2020", "23-11-2020,27-11-2020"],
@@ -62,7 +63,7 @@ var DataPad = {
                 "fadesAnimation": true
                 */
             },
-            "value": "01-11-2020",
+            "value": "1980-06-19",
             "value_": ""
         };
     },
