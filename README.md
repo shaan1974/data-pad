@@ -66,7 +66,7 @@ Only moment.js. So Read Momentjs documentation to know more about date formating
         "disabled_days": ["07-12-2020", "23-11-2020,27-11-2020"],
         "disabledWeekendEnds": false,
         "position": "auto",
-        /* down,up,right,auto */
+        /* down,up,right,auto, up-right, down-right */
         "fadesAnimation": true
     }
 ```
@@ -77,9 +77,15 @@ Only moment.js. So Read Momentjs documentation to know more about date formating
 
 **To do: **
 
+- In case of position  EQ up, up-right calendar height could change so we have to do a repositionning of the calendar.
 - No more ideas.
 
 **Versions: **
+
+1.9 ( Hallelujah )
+
+- Bug with config assignement.
+- Introduce up-right, down-right for positionning.
 
 1.8 ( Ausländer - Rammstein )
 

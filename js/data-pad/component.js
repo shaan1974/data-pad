@@ -13,7 +13,7 @@ function initDataPad(vapp)
                     "month": 0,
                     "year": 0,
                     "rows": [],
-                    "swm": false,
+                    /*"swm": false,*/
                     "showCalendar": false,
                     "tmp_year": 0,
                     "popoverYears": false,
@@ -94,15 +94,47 @@ function initDataPad(vapp)
             {
                 //  BUILD INTERNAL CONFIGURATION
                 //
-                var keys = Object.keys(this.config);
-                for (var i = 0; i < keys.length; i++)
+                //  https://medium.com/javascript-in-plain-english/how-to-merge-objects-in-javascript-98f2209710e3
+                //
+                var merge = (...arguments) =>
                 {
-                    this.zconfig["" + keys[i] + ""] = this.config["" + keys[i] + ""];
-                }
+                    let target = {};
+                    // Merge the object into the target object
+                    let merger = (obj) =>
+                    {
+                        for (let prop in obj)
+                        {
+                            if (obj.hasOwnProperty(prop))
+                            {
+                                if (Object.prototype.toString.call(obj[prop]) === '[object Object]')
+                                {
+                                    // If we're doing a deep merge
+                                    // and the property is an object
+                                    target[prop] = merge(target[prop], obj[prop]);
+                                }
+                                else
+                                {
+                                    // Otherwise, do a regular merge
+                                    target[prop] = obj[prop];
+                                }
+                            }
+                        }
+                    };
+                    //Loop through each object and conduct a merge
+                    for (let i = 0; i < arguments.length; i++)
+                    {
+                        merger(arguments[i]);
+                    }
+                    return target;
+                };
+
+                this.zconfig = merge(JSON.parse(JSON.stringify(this.zconfig)), JSON.parse(JSON.stringify(this.config)));
+
+                // console.log(this.zconfig);
 
                 //  SET FIRST DAY OF THE WEEK
                 //
-                this.swm = this.zconfig.firstDayOfTheWeekMonday;
+                //  this.swm = this.zconfig.firstDayOfTheWeekMonday;
 
                 //  CHECK IF MIN-MAX HAS BEEN DEFINED OR NOT
                 //
@@ -245,11 +277,16 @@ function initDataPad(vapp)
                             this.$el.querySelector(".data-pad-calendar").style.transform = "translate(0px 0px)";
                             break;
                         case "UP":
-
                             this.$el.querySelector(".data-pad-calendar").style.transform = "translateY(-" + (r1.height + r2.height) + "px)";
                             break;
                         case "RIGHT":
                             this.$el.querySelector(".data-pad-calendar").style.transform = "translate(" + (r1.width) + "px,-" + (r1.height) + "px)";
+                            break;
+                        case "DOWN-RIGHT":
+                            this.$el.querySelector(".data-pad-calendar").style.transform = "translate(" + (r1.width - r2.width) + "px, 0px)";
+                            break;
+                        case "UP-RIGHT":
+                            this.$el.querySelector(".data-pad-calendar").style.transform = "translate(" + (r1.width - r2.width) + "px, -" + (r1.height + r2.height) + "px)";
                             break;
                     }
                 },
@@ -281,7 +318,7 @@ function initDataPad(vapp)
                 */
                 buildCalendar: function(month, year)
                 {
-                    var swm = this.zconfig.firstDayOfTheWeekMonday;
+                    // var swm = this.zconfig.firstDayOfTheWeekMonday;
                     month--;
 
                     var firstDay = (new Date(year, month)).getDay();
@@ -290,7 +327,8 @@ function initDataPad(vapp)
                     var c_month = moment(this.value, this.zconfig.format).month();
                     var c_day;
 
-                    if (swm)
+                    // if (swm)
+                    if (this.zconfig.firstDayOfTheWeekMonday)
                     {
                         if (firstDay === 0)
                         {
