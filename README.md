@@ -77,10 +77,14 @@ Only moment.js. So Read Momentjs documentation to know more about date formating
 
 **To do: **
 
-- In case of position  EQ up, up-right calendar height could change so we have to do a repositionning of the calendar.
 - No more ideas.
 
 **Versions: **
+
+2.0 ( The secret of Monkey Island ) 
+
+- Code optimisation.
+- Now you can switch language and apply new on to moment with => moment.lang("en") Labels of the calendar should change also.
 
 1.9 ( Hallelujah )
 

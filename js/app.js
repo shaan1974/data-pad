@@ -60,7 +60,9 @@ var DataPad = {
                 "special_days": ["09-11-2020,13-11-2020", "25-12-2020", "01-01-2021"],
                 "disabled_days": ["07-12-2020", "23-11-2020,27-11-2020"],
                 "disabledWeekendEnds": false,
+                */
                 "position": "auto",
+                /*
                 "fadesAnimation": true
                  */
             },

@@ -13,7 +13,6 @@ function initDataPad(vapp)
                     "month": 0,
                     "year": 0,
                     "rows": [],
-                    /*"swm": false,*/
                     "showCalendar": false,
                     "tmp_year": 0,
                     "popoverYears": false,
@@ -130,12 +129,6 @@ function initDataPad(vapp)
 
                 this.zconfig = merge(JSON.parse(JSON.stringify(this.zconfig)), JSON.parse(JSON.stringify(this.config)));
 
-                // console.log(this.zconfig);
-
-                //  SET FIRST DAY OF THE WEEK
-                //
-                //  this.swm = this.zconfig.firstDayOfTheWeekMonday;
-
                 //  CHECK IF MIN-MAX HAS BEEN DEFINED OR NOT
                 //
                 this.zconfig.minDate = (this.zconfig.minDate === "") ? moment("01-01-0001", "MM-DD-YYYY").format(this.zconfig.format) : this.zconfig.minDate;
@@ -221,6 +214,13 @@ function initDataPad(vapp)
 
                     if (v /* === true*/ )
                     {
+                        //  RESET LABELS, IF THEY HAS BEEN UPDATE WITH :
+                        //  moment.lang("en")
+                        //
+                        this.labels.months_long = moment.localeData()._months;
+                        this.labels.months = moment.localeData()._monthsShort;
+                        this.labels.days = moment.localeData()._weekdaysMin;
+
                         this.$nextTick(() =>
                         {
                             if (this.zconfig.position !== "auto")
@@ -229,22 +229,14 @@ function initDataPad(vapp)
                             }
                             else
                             {
-                                var cal = this.$el.querySelector(".data-pad-calendar");
-
-                                if (this.isInViewport(cal) === false)
+                                var p = ["DOWN", "DOWN-RIGHT", "RIGHT", "UP", "UP-RIGHT", "DOWN"];
+                                for (var c = 0; c < p.length; c++)
                                 {
-                                    //  TRY RIGHT
-                                    this.setCalendarPosition("RIGHT");
-
-                                    if (this.isInViewport(cal) === false)
+                                    this.setCalendarPosition("" + p[c] + "");
+                                    if (this.isInViewport(this.$el.querySelector(".data-pad-calendar")) === true)
                                     {
-                                        // SET UP
-                                        this.setCalendarPosition("UP");
-
-                                        if (this.isInViewport(cal) === false)
-                                        {
-                                            this.setCalendarPosition("DOWN");
-                                        }
+                                        // console.log(p[c]);
+                                        break;
                                     }
                                 }
                             }
@@ -270,55 +262,61 @@ function initDataPad(vapp)
                 {
                     var r1 = this.$el.querySelector("input").getBoundingClientRect();
                     var r2 = this.$el.querySelector(".data-pad-calendar").getBoundingClientRect();
+                    var c = {
+                        "DOWN":
+                        {
+                            x: 0,
+                            y: 0
+                        },
+                        "UP":
+                        {
+                            x: 0,
+                            y: ((r1.height + r2.height) * -1)
+                        },
+                        "RIGHT":
+                        {
+                            x: r1.width,
+                            y: (r1.height * -1)
+                        },
+                        "DOWN-RIGHT":
+                        {
+                            x: (r1.width - r2.width),
+                            y: 0
+                        },
+                        "UP-RIGHT":
+                        {
+                            x: (r1.width - r2.width),
+                            y: ((r1.height + r2.height) * -1)
+                        }
+                    };
 
-                    switch (p)
-                    {
-                        case "DOWN":
-                            this.$el.querySelector(".data-pad-calendar").style.transform = "translate(0px 0px)";
-                            break;
-                        case "UP":
-                            this.$el.querySelector(".data-pad-calendar").style.transform = "translateY(-" + (r1.height + r2.height) + "px)";
-                            break;
-                        case "RIGHT":
-                            this.$el.querySelector(".data-pad-calendar").style.transform = "translate(" + (r1.width) + "px,-" + (r1.height) + "px)";
-                            break;
-                        case "DOWN-RIGHT":
-                            this.$el.querySelector(".data-pad-calendar").style.transform = "translate(" + (r1.width - r2.width) + "px, 0px)";
-                            break;
-                        case "UP-RIGHT":
-                            this.$el.querySelector(".data-pad-calendar").style.transform = "translate(" + (r1.width - r2.width) + "px, -" + (r1.height + r2.height) + "px)";
-                            break;
-                    }
+                    this.$el.querySelector(".data-pad-calendar").style.transform = "translate(" + c[p].x + "px, " + c[p].y + "px)";
                 },
                 /*
                     RESET CALENDAR TO REVERT TO CURRENT DAY OR CURRENT MONTH/YEAR WHEN ENTER INTO THE CALENDAR
                 */
                 resetCalendar: function()
                 {
-                    var year, month;
+                    // var year, month;
 
                     if (this.value === "")
                     {
-                        year = moment().year();
-                        month = moment().month() + 1;
+                        this.year = moment().year();
+                        this.month = moment().month() + 1;
                     }
                     else
                     {
-                        year = moment(this.value, this.zconfig.format).year();
-                        month = moment(this.value, this.zconfig.format).month() + 1;
+                        this.year = moment(this.value, this.zconfig.format).year();
+                        this.month = moment(this.value, this.zconfig.format).month() + 1;
                     }
 
-                    this.month = month;
-                    this.year = year;
-
-                    this.buildCalendar(month, year);
+                    this.buildCalendar(this.month, this.year);
                 },
                 /*
                     BUILD CALENDAR
                 */
                 buildCalendar: function(month, year)
                 {
-                    // var swm = this.zconfig.firstDayOfTheWeekMonday;
                     month--;
 
                     var firstDay = (new Date(year, month)).getDay();
@@ -327,7 +325,6 @@ function initDataPad(vapp)
                     var c_month = moment(this.value, this.zconfig.format).month();
                     var c_day;
 
-                    // if (swm)
                     if (this.zconfig.firstDayOfTheWeekMonday)
                     {
                         if (firstDay === 0)
@@ -583,12 +580,7 @@ function initDataPad(vapp)
                 isInViewport: function(element)
                 {
                     var rect = element.getBoundingClientRect();
-                    return (
-                        rect.top >= 0 &&
-                        rect.left >= 0 &&
-                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-                    );
+                    return (rect.top >= 0 && rect.left >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && rect.right <= (window.innerWidth || document.documentElement.clientWidth));
                 }
             }
         }
